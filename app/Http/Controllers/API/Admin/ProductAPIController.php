@@ -156,11 +156,11 @@ class ProductAPIController extends AppBaseController
     public function show($id)
     {
         /** @var Product $product */
-        $product = $this->productRepository->find($id);
+        $product = Product::findOrFail($id);
 
-        if (empty($product)) {
-            return $this->sendError('Product not found');
-        }
+//        if (empty($product)) {
+//            return $this->sendError('Product not found');
+//        }
 
         return $this->sendResponse($product->toArray(), 'Product retrieved successfully');
     }
