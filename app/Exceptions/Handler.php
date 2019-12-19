@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use function Psy\debug;
 
 class Handler extends ExceptionHandler
 {
@@ -38,6 +40,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
+        if ($exception instanceof ModelNotFoundException) {
+            $model = strtolower(class_basename($exception->getModel()));
+            Log::info("Dose not exist any instance of {$model} with the given id");
+        }
         parent::report($exception);
     }
 
