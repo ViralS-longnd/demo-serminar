@@ -43,14 +43,18 @@ class ProductController extends AppBaseController
     public function submitSearch(\Illuminate\Http\Request $request)
     {
 //        $product = Product::find($request->input('product_id'));
-//        $product = Product::findOrFail($request->input('product_id'));
+//        if (!$product) {
+//            return abort('404');
+//        }
         try {
 //            $product = Product::findOrFail($request->input('product_id'));
             $product = $this->productRepository->search($request->input('product_id'));
-        } catch (ProductNotFoundException $exception) {
+        } catch (ModelNotFoundException $exception) {
+//            return $exception->getMessage();
             return redirect()->back()->withError($exception->getMessage())->withInput();
-//            return redirect()->back()->withError('Product not found by ID ' . $request->input('product_id'))->withInput();
+//            return redirect()->back()->withError('Không có kết quả tìm kiếm cho product với Id: '. $request->input('product_id'))->withInput();
         }
+//        $product = Product::findOrFail($request->input('product_id'));
         return view('admin.products.show_search', compact('product'));
     }
 

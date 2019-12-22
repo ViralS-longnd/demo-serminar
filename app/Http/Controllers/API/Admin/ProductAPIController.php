@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\API\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\API\Admin\CreateProductAPIRequest;
 use App\Http\Requests\API\Admin\UpdateProductAPIRequest;
 use App\Models\Admin\Product;
 use App\Repositories\Admin\ProductRepository;
+use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController;
 use Response;
@@ -15,8 +17,9 @@ use Response;
  * @package App\Http\Controllers\API\Admin
  */
 
-class ProductAPIController extends AppBaseController
+class ProductAPIController extends Controller
 {
+    use ApiResponse;
     /** @var  ProductRepository */
     private $productRepository;
 
@@ -156,10 +159,10 @@ class ProductAPIController extends AppBaseController
     public function show($id)
     {
         /** @var Product $product */
-        $product = Product::findOrFail($id);
+        $product = Product::find($id);
 
 //        if (empty($product)) {
-//            return $this->sendError('Product not found');
+//            return $this->sendError('Product not found', 404);
 //        }
 
         return $this->sendResponse($product->toArray(), 'Product retrieved successfully');

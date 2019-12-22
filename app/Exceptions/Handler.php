@@ -3,9 +3,13 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use App\Traits\ApiResponse;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 use function Psy\debug;
@@ -40,10 +44,10 @@ class Handler extends ExceptionHandler
      */
     public function report(Exception $exception)
     {
-        if ($exception instanceof ModelNotFoundException) {
-            $model = strtolower(class_basename($exception->getModel()));
-            Log::info("Dose not exist any instance of {$model} with the given id");
-        }
+//        if ($exception instanceof ModelNotFoundException) {
+//            $model = strtolower(class_basename($exception->getModel()));
+//            Log::info("Dose not exist any instance of {$model} with the given id");
+//        }
         parent::report($exception);
     }
 
@@ -56,11 +60,29 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof ModelNotFoundException) {
-            $model = strtolower(class_basename($exception->getModel()));
+//        $isApiCall = (strpos($request->getUri(), '/api') !== false);
+//        if ($isApiCall) {
+//            $request->headers->set('X-Requested-With', 'XMLHttpRequest');
+//        }
+//        if ($exception instanceof ModelNotFoundException) {
+//            $model = strtolower(class_basename($exception->getModel()));
+//
+//            return $this->sendError("Dose not exist any instance of {$model} with the given id", Response::HTTP_NOT_FOUND);
+//        }
+//
+//        if ($exception instanceof AuthenticationException) {
+//            return $this->sendError($exception->getMessage(), Response::HTTP_FORBIDDEN);
+//        }
+//
+//        if ($exception instanceof AuthorizationException) {
+//            return $this->sendError($exception->getMessage(), Response::HTTP_UNAUTHORIZED);
+//        }
+//
+//        if ($exception instanceof ValidationException) {
+//            $error = $exception->validator->errors()->getMessages();
+//            return $this->sendError($error, Response::HTTP_UNPROCESSABLE_ENTITY);
+//        }
 
-            return $this->sendError("Dose not exist any instance of {$model} with the given id", Response::HTTP_NOT_FOUND);
-        }
 
         return parent::render($request, $exception);
     }

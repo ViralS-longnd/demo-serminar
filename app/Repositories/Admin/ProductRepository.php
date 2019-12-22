@@ -45,8 +45,8 @@ class ProductRepository extends BaseRepository
     {
         $product = $this->model->find($productId);
         if (!$product) {
-            throw new ProductNotFoundException('Product not found by ID ' . $productId);
-//            throw new ModelNotFoundException('Product not found by ID ' . $productId);
+//            throw new ProductNotFoundException('Product not found by ID ' . $productId);
+            throw new ModelNotFoundException('Product not found by ID ' . $productId);
         }
         return $product;
     }
